@@ -1,8 +1,11 @@
 package com.projeto.curso.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,6 +20,10 @@ public class User implements Serializable { //SERIALIZIBLE = decidir quando os o
     private String email;
     private String phone;
     private String password;
+
+    @JsonIgnore //Para nao dar loop
+    @OneToMany(mappedBy = "user") //Um para muitos , mapeado para user
+    private List<Order> orders = new ArrayList<>(); //Lista de pedidos em uma coleção, e tabem somente usar o get
 
     public User() {
     }
@@ -66,6 +73,10 @@ public class User implements Serializable { //SERIALIZIBLE = decidir quando os o
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
     }
 
     @Override
