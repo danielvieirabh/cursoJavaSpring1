@@ -19,7 +19,11 @@ public class Product implements Serializable {
     private Double preco;
     private String imgUrl;
 
-    @Transient
+    @ManyToMany // MUitos para muitos
+    @JoinTable(name = "tb_product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id") //O inverso de JoinColummn vai ser category
+    )
     private Set<Category> categories = new HashSet<>(); //Set = conjunto , O mesmo produto nao pode ter a mesma categoria , mais de uma vez , E COMECAR VAZIA
 
     public Product() {

@@ -41,6 +41,9 @@ public class TestConfig implements CommandLineRunner {
         Order pedido2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), usuario2, OrderStatus.CANCELED); //pedido 2 do usuario 2 (Sao relacoes)
         Order pedido3 = new Order(null, Instant.parse("2019-07-22T15:21:22Z"), usuario1, OrderStatus.WAITTING_PAYMENT); //pedido 3 do suario 1
 
+        userRepository.saveAll(Arrays.asList(usuario1, usuario2)); //Criar uma lista pros usuarios e salvar no banco
+        orderRepository.saveAll(Arrays.asList(pedido1,pedido2,pedido3));
+
         //Categorias
         Category categoria1 = new Category(null, "Electronics");
         Category categoria2 = new Category(null, "Books");
@@ -53,12 +56,16 @@ public class TestConfig implements CommandLineRunner {
         Product produto4 = new Product(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
         Product produto5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
 
-
-
-
-        userRepository.saveAll(Arrays.asList(usuario1, usuario2)); //Criar uma lista pros usuarios e salvar no banco
-        orderRepository.saveAll(Arrays.asList(pedido1,pedido2,pedido3));
         categoryRepository.saveAll(Arrays.asList(categoria1,categoria2, categoria3));
         productRepository.saveAll(Arrays.asList(produto1,produto2, produto3,produto4, produto5));
+
+        //relacionando os produtos com Categorias
+        produto1.getCategories().add(categoria2); //Produto tem categorias , porque la usa um Set
+        produto2.getCategories().add(categoria1);
+        produto2.getCategories().add(categoria3);
+        produto3.getCategories().add(categoria3);
+        produto4.getCategories().add(categoria3);
+        produto5.getCategories().add(categoria2);
+        productRepository.saveAll(Arrays.asList(produto1,produto2, produto3,produto4, produto5)); //Salvar denovo com as associacoes que fiz
     }
 }

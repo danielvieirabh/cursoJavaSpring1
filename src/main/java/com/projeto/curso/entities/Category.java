@@ -1,5 +1,6 @@
 package com.projeto.curso.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -16,7 +17,8 @@ public class Category implements Serializable {
     private Long id;
     private String nome;
 
-    @Transient
+    @JsonIgnore //Para nao dar loop na rota do Postman
+    @ManyToMany(mappedBy = "categories") //Pega o nome que setei la em products
     private Set<Product> products = new HashSet<>();
 
     public Category() {

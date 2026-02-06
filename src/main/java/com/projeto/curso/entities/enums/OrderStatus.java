@@ -21,9 +21,9 @@ public enum OrderStatus {
        this.code = code;
    }
 
-   //Para acessar o codiog , metodo poublic
+   //Para acessar o codigo , metodo poublic
    public int getCode() {
-       return code;
+       return this.code;
    }
 
    //Converter valor numero para tipo enumerado, Estatico pois vai funcionar sem instanciar
