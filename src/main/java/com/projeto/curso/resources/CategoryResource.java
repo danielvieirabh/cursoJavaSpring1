@@ -1,8 +1,8 @@
 package com.projeto.curso.resources;
 
-import com.projeto.curso.entities.User;
+import com.projeto.curso.entities.Category;
+import com.projeto.curso.services.CategoryService;
 
-import com.projeto.curso.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,21 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/users")
-public class UserResource {
+@RequestMapping(value = "/categorias")
+public class CategoryResource {
     @Autowired
-    private UserService userservice;
+    private CategoryService categoryService;
 
             //Generics
     @GetMapping // Lista de usuarios :
-    public ResponseEntity<List<User>> findAll() {
-        List<User> list = userservice.findall();
+    public ResponseEntity<List<Category>> findAll() {
+        List<Category> list = categoryService.findall();
         return ResponseEntity.ok().body(list); //Responde no caminho users
     }
 
     @GetMapping(value = "/{id}") //Requisao do tipo get , e aceita id
-    public ResponseEntity<User> findById(@PathVariable Long id) { //SO user pois vai retornar apenas um Usuario
-        User user = userservice.findById(id);
-        return ResponseEntity.ok().body(user);
+    public ResponseEntity<Category> findById(@PathVariable Long id) { //SO cateogry pois vai retornar apenas um Usuario
+        Category category = categoryService.findById(id);
+        return ResponseEntity.ok().body(category);
     }
 }

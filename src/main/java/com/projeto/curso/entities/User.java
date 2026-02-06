@@ -1,6 +1,7 @@
 package com.projeto.curso.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.projeto.curso.entities.Order;
 import jakarta.persistence.*;
 
 import java.io.Serializable;

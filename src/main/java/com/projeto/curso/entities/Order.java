@@ -1,7 +1,7 @@
 package com.projeto.curso.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.projeto.curso.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -21,6 +21,9 @@ public class Order implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "GMT") //formatar o instante
     private Instant momento;//Criar uma para instante
 
+    //      OrderStatus
+    private Integer orderStatus; //Deixar Intenger somente aqui
+
     @ManyToOne //relacionamento entre pedido e cliente , muitos para um
     @JoinColumn(name = "user_id")
 
@@ -29,10 +32,11 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(Long id,Instant momento , User user ) {
+    public Order(Long id,Instant momento , User user, OrderStatus orderStatus ) {
         this.id = id;
         this.momento = momento;
         this.user = user;
+        setOrderStatus(orderStatus);
     }
 
     public User getClient() {
@@ -57,6 +61,16 @@ public class Order implements Serializable {
 
     public void setMomento(Instant momento) {
         this.momento = momento;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.valueOf(orderStatus); // COnverter o numero inteiro para orderStatus
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        if (orderStatus != null) {
+            this.orderStatus = orderStatus.getCode();
+        }
     }
 
     @Override
