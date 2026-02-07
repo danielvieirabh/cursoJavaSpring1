@@ -1,7 +1,6 @@
 package com.projeto.curso.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projeto.curso.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 

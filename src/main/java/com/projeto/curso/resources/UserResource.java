@@ -46,4 +46,11 @@ public class UserResource {
         userservice.delete(id);
         return ResponseEntity.noContent().build(); //Aqui e o 204 para apagar
     }
+
+    //Endpoint Atualizar usuario:
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<User> update(@PathVariable Long id,@RequestBody User dados) {
+        dados = userservice.update(id, dados);
+        return ResponseEntity.ok().body(dados);
+    }
 }
