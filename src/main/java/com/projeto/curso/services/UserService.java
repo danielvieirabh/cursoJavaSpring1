@@ -2,6 +2,7 @@ package com.projeto.curso.services;
 
 import com.projeto.curso.entities.User;
 import com.projeto.curso.repositories.UserRepository;
+import com.projeto.curso.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class UserService {
 
     public User findById(Long id) { //pegar um usuario por id
        Optional<User> obj = repository.findById(id);
-       return obj.get(); //Ela retorna do tipo User
+       return obj.orElseThrow(() -> new ResourceNotFoundException(id));  //Vai trazer a excecao de erro 404 , se nao tiver o usuario ele traz essa excecao
     }
 
     //Salvar no banco de dados um dado Usuario , retorna um usuario salvo:
