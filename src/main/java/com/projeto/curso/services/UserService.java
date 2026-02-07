@@ -2,8 +2,12 @@ package com.projeto.curso.services;
 
 import com.projeto.curso.entities.User;
 import com.projeto.curso.repositories.UserRepository;
+import com.projeto.curso.services.exceptions.DatabaseException;
 import com.projeto.curso.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,14 +35,29 @@ public class UserService {
 
     //Deletar usuario
     public void delete(Long id) {
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        }
+        catch (EmptyResultDataAccessException error) {
+           throw new ResourceNotFoundException(id);
+        }
+        catch (DataIntegrityViolationException e) {
+//            e.printStackTrace();
+            throw new DatabaseException(e.getMessage()); //lançando excecao da minha camada de exercicio
+        }
+
     }
 
     //Atualizar usuarios
     public User update(Long id, User dados) {
-        User entity = repository.getReferenceById(id);
-        updateData(entity, dados);
-        return repository.save(entity);
+        try {
+            User entity = repository.getReferenceById(id);
+            updateData(entity, dados);
+            return repository.save(entity);
+        }
+        catch (EntityNotFoundException error) { //Excecoes especificas , bara dar erro 404
+            throw new ResourceNotFoundException(id);
+        }
     }
     private void updateData(User entity, User dados) { //Atualizar esses campos :
         entity.setNome(dados.getNome());

@@ -1,5 +1,6 @@
 package com.projeto.curso.resources.exceptions;
 
+import com.projeto.curso.services.exceptions.DatabaseException;
 import com.projeto.curso.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -19,5 +20,13 @@ public class ResourceExceptionHandler  {
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage() , request.getRequestURI());
         return ResponseEntity.status(status).body(err);
    }
+
+    @ExceptionHandler(DatabaseException.class) //Esse metodo ira interciptar o erro
+    public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
+        String error = "Database ERROR!";
+        HttpStatus status = HttpStatus.BAD_REQUEST; //Erro 404
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage() , request.getRequestURI());
+        return ResponseEntity.status(status).body(err);
+    }
 
 }
