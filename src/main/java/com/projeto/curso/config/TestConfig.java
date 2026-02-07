@@ -13,7 +13,9 @@ import java.time.Instant;
 import java.util.Arrays;
 
 @Configuration
-@Profile("test") //la do arquivo aplication
+@Profile("dev") //la do arquivo aplication
+//@Profile("test")
+
 public class TestConfig implements CommandLineRunner {
     @Autowired //Associa a userRepository
     private UserRepository userRepository;
