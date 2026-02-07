@@ -1,12 +1,15 @@
 package com.projeto.curso.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projeto.curso.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order") //colocar isso pois pode dar conflito com sql , pois la ja vem como padrao
@@ -24,10 +27,12 @@ public class Order implements Serializable {
     //      OrderStatus
     private Integer orderStatus; //Deixar Intenger somente aqui
 
-    @ManyToOne //relacionamento entre pedido e cliente , muitos para um
+    @ManyToOne //relacionamento entre pedido e usuario , muitos para um
     @JoinColumn(name = "user_id")
-
     private User user;
+
+    @OneToMany(mappedBy = "id.order") //Um para muitos
+    private Set<OrderItem> items = new HashSet<>();
 
     public Order() {
     }
@@ -39,12 +44,12 @@ public class Order implements Serializable {
         setOrderStatus(orderStatus);
     }
 
-    public User getClient() {
+    public User getUser() {
         return user;
     }
 
-    public void setClient(User client) {
-        this.user = client;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {
@@ -71,6 +76,10 @@ public class Order implements Serializable {
         if (orderStatus != null) {
             this.orderStatus = orderStatus.getCode();
         }
+    }
+
+    public Set<OrderItem> getItems() {
+        return items; //Pedido reconhece os items deles
     }
 
     @Override

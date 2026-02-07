@@ -1,14 +1,8 @@
 package com.projeto.curso.config;
 
-import com.projeto.curso.entities.Category;
-import com.projeto.curso.entities.Order;
-import com.projeto.curso.entities.Product;
-import com.projeto.curso.entities.User;
+import com.projeto.curso.entities.*;
 import com.projeto.curso.entities.enums.OrderStatus;
-import com.projeto.curso.repositories.CategoryRepository;
-import com.projeto.curso.repositories.OrderRepository;
-import com.projeto.curso.repositories.ProductRepository;
-import com.projeto.curso.repositories.UserRepository;
+import com.projeto.curso.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +22,8 @@ public class TestConfig implements CommandLineRunner {
     private CategoryRepository categoryRepository;
     @Autowired
     private ProductRepository productRepository;
-
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Override
     public void run(String... args) throws Exception { //Tudo que colocar aqui sera executado , quando a aplicacao for iniciada
@@ -67,5 +62,12 @@ public class TestConfig implements CommandLineRunner {
         produto4.getCategories().add(categoria3);
         produto5.getCategories().add(categoria2);
         productRepository.saveAll(Arrays.asList(produto1,produto2, produto3,produto4, produto5)); //Salvar denovo com as associacoes que fiz
+
+        //Pedidos e items
+        OrderItem orderItem1 = new OrderItem(pedido1, produto1, 2, produto1.getPreco()); //Pedidos(Orders), e Produtos
+        OrderItem orderItem2 = new OrderItem(pedido1, produto3, 1, produto3.getPreco());
+        OrderItem orderItem3 = new OrderItem(pedido2, produto3, 2, produto3.getPreco());
+        OrderItem orderItem4 = new OrderItem(pedido3, produto5, 2, produto5.getPreco());
+        orderItemRepository.saveAll(Arrays.asList(orderItem1,orderItem2,orderItem3,orderItem4));
     }
 }

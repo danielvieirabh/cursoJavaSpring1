@@ -1,4 +1,5 @@
 package com.projeto.curso.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -20,11 +21,14 @@ public class Product implements Serializable {
     private String imgUrl;
 
     @ManyToMany // MUitos para muitos
-    @JoinTable(name = "tb_product_category",
+    @JoinTable(name = "tb_product_category", //Criar uma tabela a parte
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id") //O inverso de JoinColummn vai ser category
     )
     private Set<Category> categories = new HashSet<>(); //Set = conjunto , O mesmo produto nao pode ter a mesma categoria , mais de uma vez , E COMECAR VAZIA
+
+    @OneToMany(mappedBy = "id.product") //Id da classe OrderItem
+    private Set<OrderItem> items = new HashSet<>(); //Set e para informar ao Jpa para nao ter repetiçoes do mesmo item
 
     public Product() {
 
@@ -40,6 +44,15 @@ public class Product implements Serializable {
 
     public Set<Category> getCategories() { //Nao pode ter set
         return categories;
+    }
+
+    @JsonIgnore
+    public Set<Order> getOrders() { //Nao pode ter set
+        Set<Order> setOrder = new HashSet<>();
+        for (OrderItem orderItem : items) {
+            setOrder.add(orderItem.getOrder()); //Para cada elemento dessa colecao , irei adicionar o os pedidos
+        }
+        return setOrder;
     }
 
     public String getDescricao() {

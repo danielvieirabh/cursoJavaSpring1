@@ -1,5 +1,6 @@
 package com.projeto.curso.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.projeto.curso.entities.pk.OrderItemPK;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -14,7 +15,7 @@ public class OrderItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId //Composto
-    private OrderItemPK id; //Identificador
+    private OrderItemPK id = new OrderItemPK(); //Identificador , tem que instanciar , se nao nao funciona
     private Integer quantidade;
     private Double preco;
 
@@ -29,6 +30,7 @@ public class OrderItem implements Serializable {
         this.preco = preco;
     }
 
+    @JsonIgnore //Para nao dar loop em pedidos, pois chama o pedido ais de uma vez
     public Order getOrder() {
         return id.getOrder();
     }
