@@ -22,4 +22,14 @@ public class UserService {
        Optional<User> obj = repository.findById(id);
        return obj.get(); //Ela retorna do tipo User
     }
+
+    //Salvar no banco de dados um dado Usuario , retorna um usuario salvo:
+    public User insert(User user) {
+       return repository.save(user);
+    }
+
+    //Deletar usuario
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
 }
