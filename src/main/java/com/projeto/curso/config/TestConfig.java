@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 @Configuration
@@ -24,6 +25,8 @@ public class TestConfig implements CommandLineRunner {
     private ProductRepository productRepository;
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Override
     public void run(String... args) throws Exception { //Tudo que colocar aqui sera executado , quando a aplicacao for iniciada
@@ -69,5 +72,10 @@ public class TestConfig implements CommandLineRunner {
         OrderItem orderItem3 = new OrderItem(pedido2, produto3, 2, produto3.getPreco());
         OrderItem orderItem4 = new OrderItem(pedido3, produto5, 2, produto5.getPreco());
         orderItemRepository.saveAll(Arrays.asList(orderItem1,orderItem2,orderItem3,orderItem4));
+
+        //Pagamentos:
+        Payment pagamento1 = new Payment(null, Instant.now(), pedido1); //Pedido associado a esse pagamento que e o pedido1 , que ja esta PAGO
+        pedido1.setPayment(pagamento1);
+        orderRepository.save(pedido1);
     }
 }

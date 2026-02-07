@@ -23,16 +23,19 @@ public class Order implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",timezone = "GMT") //formatar o instante
     private Instant momento;//Criar uma para instante
-
     //      OrderStatus
-    private Integer orderStatus; //Deixar Intenger somente aqui
+    @Enumerated(EnumType.STRING) //Ja manda como string
+    private OrderStatus orderStatus;
 
-    @ManyToOne //relacionamento entre pedido e usuario , muitos para um
+    @ManyToOne //relacionamento entre pedido e o id do usuario , muitos para um
     @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "id.order") //Um para muitos
     private Set<OrderItem> items = new HashSet<>();
+
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL) //atributo mapeado la em Payment e order
+    private Payment payment;
 
     public Order() {
     }
@@ -41,7 +44,7 @@ public class Order implements Serializable {
         this.id = id;
         this.momento = momento;
         this.user = user;
-        setOrderStatus(orderStatus);
+        this.orderStatus = orderStatus;
     }
 
     public User getUser() {
@@ -69,17 +72,22 @@ public class Order implements Serializable {
     }
 
     public OrderStatus getOrderStatus() {
-        return OrderStatus.valueOf(orderStatus); // COnverter o numero inteiro para orderStatus
+        return orderStatus;
     }
-
     public void setOrderStatus(OrderStatus orderStatus) {
-        if (orderStatus != null) {
-            this.orderStatus = orderStatus.getCode();
-        }
+        this.orderStatus = orderStatus;
     }
 
     public Set<OrderItem> getItems() {
         return items; //Pedido reconhece os items deles
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     @Override
@@ -92,5 +100,13 @@ public class Order implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public Double getTotal() { //Fazer total da soma de cada item de pedido
+      double soma = 0.0;
+      for (OrderItem orderItem : items) {
+          soma = soma + orderItem.getSubTotal();
+      }
+      return soma;
     }
 }

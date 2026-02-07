@@ -75,4 +75,8 @@ public class OrderItem implements Serializable {
     public int hashCode() {
         return Objects.hashCode(id);
     }
+
+    public Double getSubTotal() { //No java tem que colocar get na frente do metodo
+      return preco * quantidade;
+    }
 }
