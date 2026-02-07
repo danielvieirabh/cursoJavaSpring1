@@ -52,14 +52,14 @@ public class UserService {
     public User update(Long id, User dados) {
         try {
             User entity = repository.getReferenceById(id);
-            updateData(entity, dados);
+            updateUser(entity, dados);
             return repository.save(entity);
         }
         catch (EntityNotFoundException error) { //Excecoes especificas , bara dar erro 404
             throw new ResourceNotFoundException(id);
         }
     }
-    private void updateData(User entity, User dados) { //Atualizar esses campos :
+    private void updateUser(User entity, User dados) { //Atualizar esses campos :
         entity.setNome(dados.getNome());
         entity.setEmail(dados.getEmail());
         entity.setPhone(dados.getPhone());
